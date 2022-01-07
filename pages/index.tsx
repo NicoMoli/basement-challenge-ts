@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react"
 import {
   Box,
   BoxProps,
@@ -6,6 +7,7 @@ import {
   Flex,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react"
 import type { GetStaticProps, NextPage } from "next"
 import Head from "next/head"
@@ -13,6 +15,7 @@ import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import { Product } from "../types"
 import { motion } from "framer-motion"
+import CartModal from "../components/cartModal"
 
 interface Props {
   products: Product[]
@@ -20,6 +23,13 @@ interface Props {
 
 const Home: NextPage<Props> = ({ products }) => {
   const MotionBox = motion<BoxProps>(Box)
+  const { isOpen, onClose: closeModal, onOpen: openModal } = useDisclosure()
+  const [cart, setCart] = useState<Product[]>([])
+
+  const totalPrice = useMemo(
+    () => cart.reduce((totalPrice, product) => totalPrice + product.price, 0),
+    [cart]
+  )
 
   const marqueeVariants = {
     animate: {
@@ -32,6 +42,8 @@ const Home: NextPage<Props> = ({ products }) => {
           ease: "linear",
         },
       },
+      // https://www.framer.com/docs/transition/
+      // https://dev.to/holdmypotion/react-marquee-in-framer-motion-3d5a
     },
   }
 
@@ -72,7 +84,9 @@ const Home: NextPage<Props> = ({ products }) => {
               height={24}
             />
           </Box>
-          <Button variant="outline">CART (0)</Button>
+          <Button variant="outline" onClick={openModal}>
+            CART ({cart.length})
+          </Button>
         </Stack>
         <Stack as="header">
           <Image src={"/header.svg"} width={1300} height={360} alt="Header" />
@@ -95,7 +109,13 @@ const Home: NextPage<Props> = ({ products }) => {
           alignItems="center"
         >
           {products.map((product: Product) => (
-            <Box key={product.id} marginLeft={5} marginTop={7}>
+            <Box
+              key={product.id}
+              marginLeft={5}
+              marginTop={7}
+              cursor="pointer"
+              onClick={() => setCart((cart) => cart.concat(product))}
+            >
               <Stack>
                 {" "}
                 <Box
@@ -131,6 +151,12 @@ const Home: NextPage<Props> = ({ products }) => {
           alt="Footer Basement"
         />
       </Stack>
+      <CartModal
+        cart={cart}
+        totalPrice={totalPrice}
+        isOpen={isOpen}
+        closeModal={closeModal}
+      />
     </Container>
   )
 }
@@ -163,5 +189,3 @@ export const getStaticProps: GetStaticProps<Props, any> = async () => {
 }
 
 export default Home
-
-//VER tema imagenes en next
