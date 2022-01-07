@@ -11,6 +11,7 @@ const theme = extendTheme({
     },
   },
   fonts: {
+    heading: "Basement Grotesque",
     body: "Basement Grotesque",
   },
   components: {

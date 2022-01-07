@@ -8,8 +8,12 @@ import {
   useDisclosure,
   StackDivider,
   Flex,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react"
 import Image from "next/image"
+import { useState } from "react"
 import { Product } from "../types"
 
 interface CartModalProps {
@@ -25,8 +29,9 @@ const CartModal = ({
   isOpen,
   closeModal,
 }: CartModalProps) => {
+  const [scrollBehavior, setScrollBehavior] = useState("inside")
   return (
-    <Modal isOpen={isOpen} onClose={closeModal}>
+    <Modal isOpen={isOpen} onClose={closeModal} blockScrollOnMount={true}>
       <ModalOverlay onClick={closeModal} />
       <Stack
         bg="black"
@@ -57,7 +62,7 @@ const CartModal = ({
           height={89}
           alt="Your Cart"
         />
-        <Box paddingY={2} maxWidth={790} maxHeight={264}>
+        <Box minHeight={400}>
           {cart.map((product) => (
             <Stack
               direction="row"
@@ -81,9 +86,24 @@ const CartModal = ({
                   {product.name}
                 </Text>
                 <Text>{product.description}</Text>
-                <Text>
-                  QUANTITY: <Button>ADD</Button>
-                </Text>
+                <Stack direction="row" alignItems="center">
+                  <Text marginRight={3}>QUANTITY: </Text>
+                  <Box
+                    borderRadius={100}
+                    borderColor="white"
+                    borderWidth={2}
+                    maxWidth={95}
+                  >
+                    <Button variant="none" onClick={() => {}}>
+                      -
+                    </Button>
+                    {1}
+                    <Button variant="none" onClick={() => {}}>
+                      +
+                    </Button>
+                  </Box>
+                </Stack>
+
                 <Stack
                   direction="row"
                   justifyContent="space-between"
