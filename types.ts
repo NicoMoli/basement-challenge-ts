@@ -5,6 +5,7 @@ export interface Product {
   name: string
   description: string
   options: Array<ProductOptions>
+  count?: number
 }
 
 interface ProductOptions {

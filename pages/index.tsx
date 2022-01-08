@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import {
   Box,
   BoxProps,
@@ -16,6 +16,7 @@ import styles from "../styles/Home.module.css"
 import { Product } from "../types"
 import { motion } from "framer-motion"
 import CartModal from "../components/cartModal"
+import reduceProducts from "../helpers/reduceProducts"
 
 interface Props {
   products: Product[]
@@ -25,11 +26,35 @@ const Home: NextPage<Props> = ({ products }) => {
   const MotionBox = motion<BoxProps>(Box)
   const { isOpen, onClose: closeModal, onOpen: openModal } = useDisclosure()
   const [cart, setCart] = useState<Product[]>([])
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalItems, setTotalItems] = useState(0)
 
-  const totalPrice = useMemo(
-    () => cart.reduce((totalPrice, product) => totalPrice + product.price, 0),
-    [cart]
-  )
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      formatDataProducts()
+    }
+  }, [])
+
+  const addItem = (item: Product) => {
+    formatDataProducts(item)
+  }
+
+  const formatDataProducts = (item?: Product) => {
+    let productsSave: Product[] = []
+    const itemsSaveLocally = window.localStorage.getItem("cart")
+
+    if (itemsSaveLocally)
+      productsSave = JSON.parse(itemsSaveLocally) as Product[]
+    if (item) {
+      productsSave.push(item)
+      window.localStorage.setItem("cart", JSON.stringify(productsSave))
+    }
+
+    const reduceResult = reduceProducts(productsSave)
+    setCart(reduceResult.items)
+    setTotalItems(reduceResult.totalCount)
+    setTotalPrice(reduceResult.totalPrice)
+  }
 
   const marqueeVariants = {
     animate: {
@@ -85,7 +110,7 @@ const Home: NextPage<Props> = ({ products }) => {
             />
           </Box>
           <Button variant="outline" onClick={openModal}>
-            CART ({cart.length})
+            CART ({totalItems})
           </Button>
         </Stack>
         <Stack as="header">
@@ -114,7 +139,7 @@ const Home: NextPage<Props> = ({ products }) => {
               marginLeft={5}
               marginTop={7}
               cursor="pointer"
-              onClick={() => setCart((cart) => cart.concat(product))}
+              onClick={() => addItem(product)}
             >
               <Stack>
                 {" "}
