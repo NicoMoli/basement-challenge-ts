@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useCallback } from "react"
+import { useMemo, useState, useEffect } from "react"
 import {
   Box,
   BoxProps,
@@ -12,7 +12,6 @@ import {
 import type { GetStaticProps, NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
-import styles from "../styles/Home.module.css"
 import { Product } from "../types"
 import { motion } from "framer-motion"
 import CartModal from "../components/cartModal"
@@ -28,7 +27,7 @@ const Home: NextPage<Props> = ({ products }) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const itemsSaved = window.localStorage.getItem("cart")
-      if(itemsSaved) {
+      if (itemsSaved) {
         const items = JSON.parse(itemsSaved)
         setCart(items)
       }
@@ -36,53 +35,62 @@ const Home: NextPage<Props> = ({ products }) => {
   }, [])
 
   const getTotalItems = useMemo(() => {
-    return cart.reduce((acum, product) => acum + (product.count ? product.count : 1), 0)
+    return cart.reduce(
+      (acum, product) => acum + (product.count ? product.count : 1),
+      0
+    )
   }, [cart])
 
   const getTotalPrice = useMemo(() => {
-    return cart.reduce((acum, product) => acum + ((product.price) * (product.count ? product.count : 1)), 0)
+    return cart.reduce(
+      (acum, product) =>
+        acum + product.price * (product.count ? product.count : 1),
+      0
+    )
   }, [cart])
 
-  const handleAddItem = (item : Product) => {
+  const handleAddItem = (item: Product) => {
     setCart((prev) => {
       const isItemInTheCart = prev.find((i) => i.id === item.id)
       if (isItemInTheCart) {
-        const items =  prev.map((product) =>
-         product.id === item.id ? { ...product, count: (product.count ? product.count : 0) + 1 } : product
+        const items = prev.map((product) =>
+          product.id === item.id
+            ? { ...product, count: (product.count ? product.count : 0) + 1 }
+            : product
         )
-        
+
         window.localStorage.setItem("cart", JSON.stringify(items))
         return items
       }
 
       const newItem = [...prev, { ...item, count: 1 }]
       window.localStorage.setItem("cart", JSON.stringify(newItem))
-      return newItem; 
+      return newItem
     })
   }
 
-  const handleRemoveItem = (item : Product) => {
+  const handleRemoveItem = (item: Product) => {
     setCart((prev) => {
-      const foundItem = prev.find((product) => product.id === item.id);
+      const foundItem = prev.find((product) => product.id === item.id)
       if (foundItem) {
         if (foundItem.count === 1) {
-          const newArray = prev.filter((i) => i.id !== item.id);
+          const newArray = prev.filter((i) => i.id !== item.id)
 
           window.localStorage.setItem("cart", JSON.stringify(newArray))
-          return newArray;
+          return newArray
         } else {
           const itemsDelete = prev.map((i) =>
-            i.id === item.id ? { ...i, count: (i.count ? i.count : 1) - 1 } : i)
+            i.id === item.id ? { ...i, count: (i.count ? i.count : 1) - 1 } : i
+          )
 
           window.localStorage.setItem("cart", JSON.stringify(itemsDelete))
           return itemsDelete
         }
       } else {
-        return prev;
+        return prev
       }
     })
   }
-
 
   const marqueeVariants = {
     animate: {
@@ -218,10 +226,10 @@ const Home: NextPage<Props> = ({ products }) => {
 
 export const getStaticProps: GetStaticProps<Props, any> = async () => {
   try {
-    const host = process.env['HOST']
-    const apiURL = '/api/products/getProductList'
-    const  res = await fetch(`${host}${apiURL}`)
-    
+    const host = process.env["HOST"]
+    const apiURL = "/api/products/getProductList"
+    const res = await fetch(`${host}${apiURL}`)
+
     const products = await res.json()
 
     if (!products) {

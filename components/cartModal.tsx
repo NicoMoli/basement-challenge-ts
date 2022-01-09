@@ -9,7 +9,6 @@ import {
   Flex,
 } from "@chakra-ui/react"
 import Image from "next/image"
-import { useState } from "react"
 import { Product } from "../types"
 
 interface CartModalProps {
@@ -21,21 +20,30 @@ interface CartModalProps {
   removeProduct(item: Product): void
 }
 
+const fontTextSizes = ["11px", "12px", "21px", "21px", "21px", "21px"]
+const fontSizeName = ["14px", "14px", "35px", "35px", "35px", "35px"]
+const fontSizeFooter = ["20px", "20px", "20px", "35px", "35px", "35px"]
+const fontSizeQuantity = ["11px", "14px", "21px", "21px", "21px", "21px"]
+const justifyContentRes = [
+  "space-between",
+  "space-between",
+  "flex-start",
+  "flex-start",
+  "flex-start",
+  "flex-start",
+]
+
 const CartModal = ({
   cart,
   totalPrice,
   isOpen,
   closeModal,
   addProduct,
-  removeProduct
+  removeProduct,
 }: CartModalProps) => {
-  const [scrollBehavior, setScrollBehavior] = useState("inside")
-  const fontTextSizes = ["11px", "12px", "21px", "21px", "21px", "21px"]
-  const fontSizeName = ["14px", "14px", "35px", "35px", "35px", "35px"]
-  const fontSizeFooter = ["20px", "20px", "20px", "35px", "35px", "35px"]
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal} blockScrollOnMount={true}>
+    <Modal isOpen={isOpen} onClose={closeModal} scrollBehavior={"inside"}>
       <ModalOverlay onClick={closeModal} />
       <Stack
         bg="black"
@@ -110,11 +118,7 @@ const CartModal = ({
                 >
                   {product.name}
                 </Text>
-                <Text
-                  color="#999999"
-                  margin="0px"
-                  fontSize={["11px", "11px", "21px", "21px", "21px", "21px"]}
-                >
+                <Text color="#999999" margin="0px" fontSize={fontTextSizes}>
                   {product.description}
                 </Text>
 
@@ -122,7 +126,7 @@ const CartModal = ({
                   <Text
                     marginRight={3}
                     alignSelf="center"
-                    fontSize={["11px", "14px", "21px", "21px", "21px", "21px"]}
+                    fontSize={fontSizeQuantity}
                   >
                     QUANTITY:{" "}
                   </Text>
@@ -141,14 +145,7 @@ const CartModal = ({
                     <Button
                       width="auto"
                       variant="none"
-                      fontSize={[
-                        "11px",
-                        "13px",
-                        "21px",
-                        "21px",
-                        "21px",
-                        "21px",
-                      ]}
+                      fontSize={fontTextSizes}
                       onClick={() => {
                         removeProduct(product)
                       }}
@@ -209,11 +206,7 @@ const CartModal = ({
                     </Text>
                   </Flex>
 
-                  <Text
-                    fontSize={["12px", "14px", "35px", "35px", "35px", "35px"]}
-                  >
-                    $ {product.price}
-                  </Text>
+                  <Text fontSize={fontSizeName}>$ {product.price}</Text>
                 </Stack>
               </Stack>
             </Stack>
@@ -235,14 +228,7 @@ const CartModal = ({
             width="100%"
             direction="row"
             alignItems="center"
-            justifyContent={[
-              "space-between",
-              "space-between",
-              "flex-start",
-              "flex-start",
-              "flex-start",
-              "flex-start",
-            ]}
+            justifyContent={justifyContentRes}
           >
             <Text fontSize={fontSizeFooter} paddingRight={2}>
               TOTAL:
