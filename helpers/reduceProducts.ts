@@ -1,30 +1,39 @@
+import { useMemo } from "react"
+import { StringDecoder } from "string_decoder"
 import { Product } from "../types"
 
 const reduceProducts = (items: Product[]) => {
-  let totalCountItems: number = 0
-  let totalPrice: number = 0
+  let totalCountItems = 0
+  let totalPrice = 0
 
-  var result = [
+  const result = [
     ...items
       .reduce((previous, current) => {
-        if (!previous.has(current.id))
-          previous.set(current.id, { ...current, count: 0 })
+        if (!previous.has(current.id)) {
+          previous.set(current.id, { ...current })
+        }
 
-        const data = previous.get(current.id) as Product
-        if (data?.count) data.count++
-        else data.count = 1
-
+        const data = previous.get(current.id)
+        if (data && data?.count) {
+          data.count++
+        } else if (data && !data.count) {
+          data.count = 1
+        }
         return previous
       }, new Map<String, Product>())
       .values(),
   ]
 
-  result.map((item) => {
-    totalCountItems += item.count ? item.count : 0
+  result.forEach((item) => {
+    totalCountItems += item.count ? item.count : 1
     totalPrice += item.price * (item.count ? item.count : 1)
   })
 
-  return { items: result, totalCount: totalCountItems, totalPrice: totalPrice }
+  return {
+    itemsFormatted: result,
+    totalCount: totalCountItems,
+    totalPrice: totalPrice,
+  }
 }
 
 export default reduceProducts

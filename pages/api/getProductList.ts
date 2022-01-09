@@ -1,5 +1,4 @@
 import products from "../../products/mock.json"
-import { Product } from "../../types"
 
 const getProducts = async (req: any, res: any) => {
   try {

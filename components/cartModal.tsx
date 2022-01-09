@@ -13,10 +13,11 @@ import { useState } from "react"
 import { Product } from "../types"
 
 interface CartModalProps {
-  cart: Product[]
+  cart: Set<Product> | undefined
   totalPrice: number
   isOpen: boolean
   closeModal(): void
+  changeQuantity(type: String, item: Product): void
 }
 
 const CartModal = ({
@@ -24,11 +25,18 @@ const CartModal = ({
   totalPrice,
   isOpen,
   closeModal,
+  changeQuantity,
 }: CartModalProps) => {
   const [scrollBehavior, setScrollBehavior] = useState("inside")
   const fontTextSizes = ["11px", "12px", "21px", "21px", "21px", "21px"]
   const fontSizeName = ["14px", "14px", "35px", "35px", "35px", "35px"]
   const fontSizeFooter = ["20px", "20px", "20px", "35px", "35px", "35px"]
+
+  //useMemo
+  let data = null
+  if (cart) data = Array.from(cart)
+  console.log("MODAL set--", cart)
+  console.log("MODAL --", data)
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal} blockScrollOnMount={true}>
@@ -68,7 +76,7 @@ const CartModal = ({
           alt="Your Cart"
         />
         <Box minHeight={400}>
-          {cart.map((product) => (
+          {data?.map((product) => (
             <Stack
               direction="row"
               key={product.id}
@@ -145,7 +153,9 @@ const CartModal = ({
                         "21px",
                         "21px",
                       ]}
-                      onClick={() => {}}
+                      onClick={() => {
+                        changeQuantity("delete", product)
+                      }}
                       paddingLeft="9px !important"
                     >
                       -
@@ -157,7 +167,9 @@ const CartModal = ({
                       variant="none"
                       width="auto"
                       marginLeft="0px !important"
-                      onClick={() => {}}
+                      onClick={() => {
+                        changeQuantity("add", product)
+                      }}
                       paddingRight="9px !important"
                       fontSize={fontTextSizes}
                     >
