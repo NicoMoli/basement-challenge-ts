@@ -16,7 +16,6 @@ import styles from "../styles/Home.module.css"
 import { Product } from "../types"
 import { motion } from "framer-motion"
 import CartModal from "../components/cartModal"
-import reduceProducts from "../helpers/reduceProducts"
 interface Props {
   products: Product[]
 }
