@@ -17,7 +17,6 @@ import { Product } from "../types"
 import { motion } from "framer-motion"
 import CartModal from "../components/cartModal"
 import reduceProducts from "../helpers/reduceProducts"
-
 interface Props {
   products: Product[]
 }
@@ -26,76 +25,65 @@ const Home: NextPage<Props> = ({ products }) => {
   const MotionBox = motion<BoxProps>(Box)
   const { isOpen, onClose: closeModal, onOpen: openModal } = useDisclosure()
   const [cart, setCart] = useState<Product[]>([])
-  const [cartFormatted, setCartFormatted] = useState<Set<Product>>()
-  const [totalPrice, setTotalPrice] = useState(0)
-  const [totalItems, setTotalItems] = useState(0)
-  let setData: Set<Product> = new Set()
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const itemsSaveLocally = window.localStorage.getItem("cart")
-      if (itemsSaveLocally) {
-        let productsSave = JSON.parse(itemsSaveLocally) as Product[]
+      const itemsSaved = window.localStorage.getItem("cart")
+      if(itemsSaved) {
+        const items = JSON.parse(itemsSaved)
+        setCart(items)
       }
     }
   }, [])
 
-  const addItem = (item: Product) => {
-    const itemsOnState = [...cart]
-    itemsOnState.push(item)
-    setProducts(itemsOnState, item)
-  }
+  const getTotalItems = useMemo(() => {
+    return cart.reduce((acum, product) => acum + (product.count ? product.count : 1), 0)
+  }, [cart])
 
-  const changeQuantity = (type: String, item: Product) => {
-    const itemsOnState = [...cart]
+  const getTotalPrice = useMemo(() => {
+    return cart.reduce((acum, product) => acum + ((product.price) * (product.count ? product.count : 1)), 0)
+  }, [cart])
 
-    if (type === "add") {
-      itemsOnState.push(item)
-      setProducts(itemsOnState, item)
-    } else {
-      const index = itemsOnState.findIndex((r) => r.id === item.id)
-
-      if (index !== -1) {
-        itemsOnState.splice(index, 1)
-        setProducts(itemsOnState, item)
+  const handleAddItem = (item : Product) => {
+    setCart((prev) => {
+      const isItemInTheCart = prev.find((i) => i.id === item.id)
+      if (isItemInTheCart) {
+        const items =  prev.map((product) =>
+         product.id === item.id ? { ...product, count: (product.count ? product.count : 0) + 1 } : product
+        )
+        
+        window.localStorage.setItem("cart", JSON.stringify(items))
+        return items
       }
-    }
-  }
 
-  const handleStates = (
-    setData: Set<Product>,
-    items: Product[],
-    totalCount: number,
-    totalPrice: number
-  ) => {
-    setCartFormatted(setData)
-    setCart(items)
-    setTotalItems(totalCount)
-    setTotalPrice(totalPrice)
-  }
-
-  const getTotals = (setData: Set<Product>) => {
-    let totalCountItems = 0
-    let totalPrice = 0
-    setData.forEach((item) => {
-      totalCountItems += item.count ? item.count : 1
-      totalPrice += item.price * (item.count ? item.count : 1)
+      const newItem = [...prev, { ...item, count: 1 }]
+      window.localStorage.setItem("cart", JSON.stringify(newItem))
+      return newItem; 
     })
-
-    return { totalCountItems, totalPrice }
   }
 
-  const setProducts = (productsItems: Product[], item: Product) => {
-    const countItems = productsItems.filter((p) => p.id === item.id).length
-    productsItems.map((c) => {
-      if (c.id === item.id) c.count = countItems
-      setData.add(c)
+  const handleRemoveItem = (item : Product) => {
+    setCart((prev) => {
+      const foundItem = prev.find((product) => product.id === item.id);
+      if (foundItem) {
+        if (foundItem.count === 1) {
+          const newArray = prev.filter((i) => i.id !== item.id);
+
+          window.localStorage.setItem("cart", JSON.stringify(newArray))
+          return newArray;
+        } else {
+          const itemsDelete = prev.map((i) =>
+            i.id === item.id ? { ...i, count: (i.count ? i.count : 1) - 1 } : i)
+
+          window.localStorage.setItem("cart", JSON.stringify(itemsDelete))
+          return itemsDelete
+        }
+      } else {
+        return prev;
+      }
     })
-
-    const { totalCountItems, totalPrice } = getTotals(setData)
-    handleStates(setData, productsItems, totalCountItems, totalPrice)
-    window.localStorage.setItem("cart", JSON.stringify(productsItems))
   }
+
 
   const marqueeVariants = {
     animate: {
@@ -151,7 +139,7 @@ const Home: NextPage<Props> = ({ products }) => {
             />
           </Box>
           <Button variant="outline" onClick={openModal}>
-            CART ({totalItems})
+            CART ({getTotalItems})
           </Button>
         </Stack>
         <Stack as="header">
@@ -180,7 +168,7 @@ const Home: NextPage<Props> = ({ products }) => {
               marginLeft={5}
               marginTop={7}
               cursor="pointer"
-              onClick={() => addItem(product)}
+              onClick={() => handleAddItem(product)}
             >
               <Stack>
                 {" "}
@@ -218,11 +206,12 @@ const Home: NextPage<Props> = ({ products }) => {
         />
       </Stack>
       <CartModal
-        cart={cartFormatted}
-        totalPrice={totalPrice}
+        cart={cart}
+        totalPrice={getTotalPrice}
         isOpen={isOpen}
         closeModal={closeModal}
-        changeQuantity={changeQuantity}
+        removeProduct={handleRemoveItem}
+        addProduct={handleAddItem}
       />
     </Container>
   )
