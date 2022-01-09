@@ -218,11 +218,10 @@ const Home: NextPage<Props> = ({ products }) => {
 
 export const getStaticProps: GetStaticProps<Props, any> = async () => {
   try {
-    // TODO: Read URL from .env
-    const res = await fetch(
-      "https://mvp-next-js.vercel.app/api/products/getProductList"
-    )
-
+    const host = process.env['HOST']
+    const apiURL = '/api/products/getProductList'
+    const  res = await fetch(`${host}${apiURL}`)
+    
     const products = await res.json()
 
     if (!products) {
