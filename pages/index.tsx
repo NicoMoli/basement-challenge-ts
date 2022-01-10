@@ -109,109 +109,111 @@ const Home: NextPage<Props> = ({ products }) => {
   }
 
   return (
-    <Container maxWidth="95vw" paddingTop={6}>
-      <Stack>
-        <Stack
-          as="nav"
-          alignItems="center"
-          direction="row"
-          justifyContent="space-between"
-          paddingBottom={5}
-        >
-          <Box display={["none", "none", "none", "block"]}>
-            {" "}
-            <Image
-              alt="Basement Logo"
-              src={"/basement-logo.svg"}
-              width={192}
-              height={28}
-            />
-          </Box>
-          <Box display={["block", "block", "block", "none"]}>
-            {" "}
-            <Image
-              alt="Basement Logo Mobile"
-              src={"/logo-basement-mobile.svg"}
-              width={43}
-              height={40}
-            />
-          </Box>
-          <Box display={["none", "none", "none", "block"]}>
-            {" "}
-            <Image
-              alt="Basement Header"
-              src={"/icons-group.svg"}
-              width={283}
-              height={24}
-            />
-          </Box>
-          <Button variant="outline" onClick={openModal}>
-            CART ({getTotalItems})
-          </Button>
-        </Stack>
-        <Stack as="header">
-          <Image src={"/header.svg"} width={1300} height={360} alt="Header" />
-          <Box borderBottomWidth={2} borderColor="white" borderTopWidth={2}>
-            <MotionBox
-              fontSize={["1sm", "1sm", "1sm", "2xl", "2xl"]}
-              drag="x"
-              variants={marqueeVariants}
-              animate="animate"
-            >
-              {
-                "A man can't have enough basement swag - A man can't have enough basement swag"
-              }
-            </MotionBox>
-          </Box>
-        </Stack>
-        <Flex
-          direction={["column", "column", "column", "row", "row"]}
-          justifyContent="center"
-          alignItems="center"
-        >
-          {products.map((product: Product) => (
-            <Box
-              key={product.id}
-              marginLeft={5}
-              marginTop={7}
-              cursor="pointer"
-              onClick={() => handleAddItem(product)}
-            >
-              <Stack>
-                {" "}
-                <Box
-                  margin="auto"
-                  bgGradient="linear(to-b, black, #1D1D1D)"
-                  borderBottomWidth={2}
-                >
-                  {" "}
-                  <Image
-                    src={product.image}
-                    width={435}
-                    height={468}
-                    alt={product.name}
-                  />
-                </Box>
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                marginTop={2}
-              >
-                <Text>{product.name}</Text>
-                <Text>$ {product.price}</Text>
-              </Stack>
+    <>
+      <Container maxWidth="95vw" paddingTop={6}>
+        <Stack>
+          <Stack
+            as="nav"
+            alignItems="center"
+            direction="row"
+            justifyContent="space-between"
+            paddingBottom={5}
+          >
+            <Box display={["none", "none", "none", "block"]}>
+              {" "}
+              <Image
+                alt="Basement Logo"
+                src={"/basement-logo.svg"}
+                width={192}
+                height={28}
+              />
             </Box>
-          ))}
-        </Flex>
-        <Image
-          src={"/footer.svg"}
-          width={1376}
-          height={486}
-          alt="Footer Basement"
-        />
-      </Stack>
+            <Box display={["block", "block", "block", "none"]}>
+              {" "}
+              <Image
+                alt="Basement Logo Mobile"
+                src={"/logo-basement-mobile.svg"}
+                width={43}
+                height={40}
+              />
+            </Box>
+            <Box display={["none", "none", "none", "block"]}>
+              {" "}
+              <Image
+                alt="Basement Header"
+                src={"/icons-group.svg"}
+                width={283}
+                height={24}
+              />
+            </Box>
+            <Button variant="outline" onClick={openModal}>
+              CART ({getTotalItems})
+            </Button>
+          </Stack>
+          <Stack as="header">
+            <Image src={"/header.svg"} width={1300} height={360} alt="Header" />
+            <Box borderBottomWidth={2} borderColor="white" borderTopWidth={2}>
+              <MotionBox
+                fontSize={["1sm", "1sm", "1sm", "2xl", "2xl"]}
+                drag="x"
+                variants={marqueeVariants}
+                animate="animate"
+              >
+                {
+                  "A man can't have enough basement swag - A man can't have enough basement swag"
+                }
+              </MotionBox>
+            </Box>
+          </Stack>
+          <Flex
+            direction={["column", "column", "column", "row", "row"]}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {products.map((product: Product) => (
+              <Box
+                key={product.id}
+                marginLeft={5}
+                marginTop={7}
+                cursor="pointer"
+                onClick={() => handleAddItem(product)}
+              >
+                <Stack>
+                  {" "}
+                  <Box
+                    margin="auto"
+                    bgGradient="linear(to-b, black, #1D1D1D)"
+                    borderBottomWidth={2}
+                  >
+                    {" "}
+                    <Image
+                      src={product.image}
+                      width={435}
+                      height={468}
+                      alt={product.name}
+                    />
+                  </Box>
+                </Stack>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  marginTop={2}
+                >
+                  <Text>{product.name}</Text>
+                  <Text>$ {product.price}</Text>
+                </Stack>
+              </Box>
+            ))}
+          </Flex>
+          <Image
+            src={"/footer.svg"}
+            width={1376}
+            height={486}
+            alt="Footer Basement"
+          />
+        </Stack>
+      </Container>
       <CartModal
         cart={cart}
         totalPrice={getTotalPrice}
@@ -220,7 +222,7 @@ const Home: NextPage<Props> = ({ products }) => {
         removeProduct={handleRemoveItem}
         addProduct={handleAddItem}
       />
-    </Container>
+    </>
   )
 }
 
