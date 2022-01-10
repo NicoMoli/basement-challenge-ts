@@ -93,6 +93,9 @@ const Home: NextPage<Props> = ({ products }) => {
 
   return (
     <>
+      <Head>
+        <link rel="basement studio icon" href="/favicon.svg" />
+      </Head>
       <Container maxWidth="100vw" paddingTop={6}>
         <Stack width="100%">
           <Stack
