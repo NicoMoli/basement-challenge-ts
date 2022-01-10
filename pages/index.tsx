@@ -14,6 +14,7 @@ import Image from "next/image"
 import { Product } from "../types"
 import CartModal from "../components/cartModal/cartModal"
 import Marquee from "../components/marquee/marquee"
+import styles from "../styles/Home.module.css"
 interface Props {
   products: Product[]
 }
@@ -195,6 +196,12 @@ const Home: NextPage<Props> = ({ products }) => {
                     margin="auto"
                     bgGradient="linear(to-b, black, #1D1D1D)"
                     borderBottomWidth={2}
+                    _hover={{
+                      bgImage: "/add-to-cart.svg",
+                      bgRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      opacity: 1,
+                    }}
                   >
                     {" "}
                     <Image
@@ -202,6 +209,7 @@ const Home: NextPage<Props> = ({ products }) => {
                       width={435}
                       height={468}
                       alt={product.name}
+                      className={styles.itemImage}
                     />
                   </Box>
                 </Stack>
