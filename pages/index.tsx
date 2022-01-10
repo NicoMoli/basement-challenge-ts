@@ -132,7 +132,7 @@ const Home: NextPage<Props> = ({ products }) => {
               CART ({getTotalItems})
             </Button>
           </Stack>
-          <Stack as="header" marginBottom="100px">
+          <Stack as="header" marginBottom="100px !important">
             <Box paddingBottom={5} margin="auto" maxWidth={1376}>
               <Image
                 src={"/header.svg"}
