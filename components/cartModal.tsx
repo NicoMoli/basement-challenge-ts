@@ -106,7 +106,7 @@ const CartModal = ({
                   <Box
                     margin={[2, 2, 4, 4, 4]}
                     bgGradient="linear(to-b, black, #1D1D1D)"
-                    maxWidth={[98, 98, 231, 231, 231]}
+                    minWidth={[98, 98, 231, 231, 231]}
                   >
                     <Image
                       src={product.image}
