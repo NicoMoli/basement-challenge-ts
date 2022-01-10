@@ -185,7 +185,7 @@ const Home: NextPage<Props> = ({ products }) => {
             justifyContent="center"
             alignItems="center"
           >
-            {products?.map((product: Product) => (
+            {products.map((product: Product) => (
               <Box
                 key={product.id}
                 marginLeft={5}
