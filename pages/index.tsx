@@ -95,6 +95,10 @@ const Home: NextPage<Props> = ({ products }) => {
     <>
       <Head>
         <link rel="basement studio icon" href="/favicon.svg" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1"
+        ></meta>
       </Head>
       <Container maxWidth="100vw" paddingTop={6}>
         <Stack width="100%">

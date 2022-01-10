@@ -12,9 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         titleTemplate="Basement FrontEnd Challenge"
         defaultTitle="Basement FrontEnd Challenge"
         description="A front end challenge built on NextJs, react, typescript and Chakra UI"
-        canonical="https://mvp-next-js.vercel.app/"
+        canonical="https://basement-challenge-2022.vercel.app/"
         openGraph={{
-          url: "https://poner url",
+          url: "https://basement-challenge-2022.vercel.app/",
           title: "Basemente Studio Challenge",
           description:
             "A front end challenge built on NextJs, react, typescript and Chakra UI",
