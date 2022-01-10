@@ -11,7 +11,7 @@ import {
   ModalBody,
 } from "@chakra-ui/react"
 import Image from "next/image"
-import { Product } from "../types"
+import { Product } from "../../types"
 
 interface CartModalProps {
   cart: Product[]

@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from "react"
 import {
   Box,
-  BoxProps,
   Button,
   Container,
   Flex,
@@ -13,14 +12,13 @@ import type { GetStaticProps, NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image"
 import { Product } from "../types"
-import { motion } from "framer-motion"
-import CartModal from "../components/cartModal"
+import CartModal from "../components/cartModal/cartModal"
+import Marquee from "../components/marquee/marquee"
 interface Props {
   products: Product[]
 }
 
 const Home: NextPage<Props> = ({ products }) => {
-  const MotionBox = motion<BoxProps>(Box)
   const { isOpen, onClose: closeModal, onOpen: openModal } = useDisclosure()
   const [cart, setCart] = useState<Product[]>([])
 
@@ -92,26 +90,10 @@ const Home: NextPage<Props> = ({ products }) => {
     })
   }
 
-  const marqueeVariants = {
-    animate: {
-      x: [0, -1350],
-      transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 8,
-          ease: "linear",
-        },
-      },
-      // https://www.framer.com/docs/transition/
-      // https://dev.to/holdmypotion/react-marquee-in-framer-motion-3d5a
-    },
-  }
-
   return (
     <>
-      <Container maxWidth="95vw" paddingTop={6}>
-        <Stack>
+      <Container maxWidth="100vw" paddingTop={6}>
+        <Stack width="100%">
           <Stack
             as="nav"
             alignItems="center"
@@ -150,20 +132,49 @@ const Home: NextPage<Props> = ({ products }) => {
               CART ({getTotalItems})
             </Button>
           </Stack>
-          <Stack as="header">
-            <Image src={"/header.svg"} width={1300} height={360} alt="Header" />
-            <Box borderBottomWidth={2} borderColor="white" borderTopWidth={2}>
-              <MotionBox
-                fontSize={["1sm", "1sm", "1sm", "2xl", "2xl"]}
-                drag="x"
-                variants={marqueeVariants}
-                animate="animate"
-              >
-                {
-                  "A man can't have enough basement swag - A man can't have enough basement swag"
-                }
-              </MotionBox>
+          <Stack as="header" marginBottom="100px">
+            <Box paddingBottom={5} margin="auto" maxWidth={1376}>
+              <Image
+                src={"/header.svg"}
+                width={1376}
+                height={360}
+                alt="Header"
+              />
             </Box>
+
+            <Box
+              position="absolute"
+              width={144}
+              top="28.5%"
+              left="17%"
+              zIndex={1}
+              display={["none", "none", "none", "block"]}
+            >
+              <Image
+                src={"/asterisk-left.svg"}
+                width={144}
+                height={144}
+                alt="Basement asterisk left"
+              />
+            </Box>
+
+            <Box
+              position="absolute"
+              width={144}
+              top="23%"
+              left="76%"
+              zIndex={1}
+              display={["none", "none", "none", "block"]}
+            >
+              <Image
+                src={"/asterisk-right.svg"}
+                width={144}
+                height={144}
+                alt="Basement asterisk right"
+              />
+            </Box>
+
+            <Marquee />
           </Stack>
           <Flex
             direction={["column", "column", "column", "row", "row"]}
