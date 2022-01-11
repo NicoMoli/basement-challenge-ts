@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             "A front end challenge built on NextJs, react, typescript and Chakra UI",
           images: [
             {
-              url: `${process.env["HOST"]}${"/basement-studio.png"}`,
+              url: "https://basement-challenge-2022.vercel.app/basement-studio.png",
               width: 800,
               height: 420,
               alt: "Basemente Studio",
