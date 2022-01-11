@@ -85,7 +85,7 @@ const CartModal = ({
             </Button>
 
             <Image
-              src={"/your-cart-desktop.svg"}
+              src={"/your-cart.svg"}
               width={760}
               height={89}
               alt="Your Cart"

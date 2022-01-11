@@ -113,7 +113,7 @@ const Home: NextPage<Props> = ({ products }) => {
               {" "}
               <Image
                 alt="Basement Logo"
-                src={"/basement-logo.svg"}
+                src={"/logo-basement.svg"}
                 width={192}
                 height={28}
               />
