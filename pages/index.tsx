@@ -192,7 +192,7 @@ const Home: NextPage<Props> = ({ products }) => {
             {products.map((product: Product) => (
               <Box
                 key={product.id}
-                marginLeft={5}
+                marginX="8px"
                 marginTop={7}
                 cursor="pointer"
                 onClick={() => handleAddItem(product)}
