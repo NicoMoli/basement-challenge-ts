@@ -196,6 +196,7 @@ const Home: NextPage<Props> = ({ products }) => {
                 marginTop={7}
                 cursor="pointer"
                 onClick={() => handleAddItem(product)}
+                data-testid="product-container"
               >
                 <Stack>
                   {" "}
