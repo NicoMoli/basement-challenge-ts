@@ -83,6 +83,7 @@ const Home: NextPage<Props> = ({ products }) => {
           )
 
           window.localStorage.setItem("cart", JSON.stringify(itemsDelete))
+
           return itemsDelete
         }
       } else {
