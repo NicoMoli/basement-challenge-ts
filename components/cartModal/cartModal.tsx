@@ -53,6 +53,7 @@ const CartModal = ({
         marginTop={0}
         width="100%"
         maxWidth={824}
+        data-testid="modal-container"
       >
         <ModalBody
           padding={0}
@@ -75,6 +76,7 @@ const CartModal = ({
               cursor="pointer"
               padding={5}
               marginBottom={4}
+              data-testid="modal-close-btn"
             >
               <Image
                 src={"/closeIcon.svg"}
@@ -102,6 +104,7 @@ const CartModal = ({
                   margin={7}
                   maxHeight={[172, 264, 264, 264, 264]}
                   maxWidth={[343, 700, 700, 760, 760]}
+                  data-testid="products-on-cart"
                 >
                   <Box
                     margin={[2, 2, 4, 4, 4]}
